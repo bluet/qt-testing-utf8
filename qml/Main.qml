@@ -9,24 +9,39 @@ App {
 	//  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
 	//licenseKey: "<generate one from https://v-play.net/licenseKey>"
 
-	Navigation {
+	// workaround from https://v-play.net/developers/forums/t/qml-button-text-cannot-display-utf-8-chinese-only-show-empty-spaces#post-16697
+	Loader {
+		id: loader
+		sourceComponent: navigationComponent
+		asynchronous: true
+		anchors.fill: parent
+		visible: false
 
-		// Comment to use a navigation drawer instead of tabs on Android
-		navigationMode: navigationModeTabs
+		// after loading is finished, add the item to the main app content item
+		onLoaded: loader.item.parent = app.contentItem
+	}
 
-		NavigationItem {
-			title: qsTr("First Page")
-			icon: IconType.square
+	Component {
+		id: navigationComponent
+		Navigation {
 
-			FirstPage {}
+			// Comment to use a navigation drawer instead of tabs on Android
+			navigationMode: navigationModeTabs
+
+			NavigationItem {
+				title: qsTr("First Page")
+				icon: IconType.square
+
+				FirstPage {}
+			}
+
+			NavigationItem {
+				title: qsTr("Second Page")
+				icon: IconType.circle
+
+				SecondPage {}
+			}
+
 		}
-
-		NavigationItem {
-			title: qsTr("Second Page")
-			icon: IconType.circle
-
-			SecondPage {}
-		}
-
 	}
 }
